@@ -1,14 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-using KNN;
-using System;
+﻿using KNN;
 
-Console.WriteLine("Hello, World!");
+Console.WriteLine("KNN");
 
-//List<Model> models = new ();
-
-KNNHelper knn = new KNNHelper(200,  15, 3);
-
+//KNNHelper knn = new KNNHelper(200,  15, 50);
+KNNHelper knn = new KNNHelper(80, 10, 30);
 knn.Output();
-
 knn.OutputVisual();
-
+knn.OutputResults();
+//szczegóły  obliczeń - odkomentuj jeśli chcesz znac wartości poszczególnych pól
+knn.OutputDetails();

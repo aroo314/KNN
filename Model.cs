@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace KNN
 {
+	/// <summary>
+	/// Reprezentant populacji
+	/// </summary>
 	class Model
 	{
 		public int X { get; set; }
@@ -13,6 +16,5 @@ namespace KNN
 		public int Ocupation { get; set; }
 		public string OcupationS { get; set; }
 		public double EuklidesValue { get; set; }
-		
 	}
 }
