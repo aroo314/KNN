@@ -8,12 +8,15 @@
 		List<int> _xPosibilities;
 		List<int> _yPosibilities;
 
-		Dictionary<int, String> _ocupations  = new();
+		List<Model> population = new();
+		Model serchingModel = new();
+
+		Dictionary<int, String> _ocupations = new();
 
 		int _population = 0;
 		int _arrayDimSize = 0;
 
-		public KNNHelper(int population, int arrayDimSize)
+		public KNNHelper(int population, int arrayDimSize, int k)
 		{
 			_population = population;
 			_arrayDimSize = arrayDimSize;
@@ -22,7 +25,39 @@
 			_matrixVisual = new string[_arrayDimSize, _arrayDimSize];
 
 			InitDict();
-			Populate(_matrix);
+
+			Populate();
+			SearchKNN(k);
+
+		}
+
+		private void SearchKNN(int k)
+		{
+			//licz wartości miary euklidesowej
+			foreach (var item in population)
+			{
+				var a = Math.Pow(serchingModel.X - item.X, 2) + Math.Pow(serchingModel.Y - item.Y, 2);
+				item.EuklidesValue = Math.Sqrt(a);
+			}
+
+			// sortuj ascending
+
+			population.Sort((a, b) => a.EuklidesValue.CompareTo(b.EuklidesValue));
+
+			foreach (var item in population)
+			{
+				Console.WriteLine(item.OcupationS);
+				Console.WriteLine(item.EuklidesValue);
+				Console.WriteLine("===========");
+			}
+
+			var l = population.GroupBy(x => x.OcupationS);
+
+			foreach (var grp in l)
+			{
+				Console.WriteLine("{0} {1}", grp.Key, grp.Count());
+			}
+
 		}
 
 		void InitDict()
@@ -37,7 +72,7 @@
 			_ocupations.Add(7, "Keln");
 		}
 
-		public void Populate(int?[,] matrix)
+		public void Populate()
 		{
 			Random rnd = new Random();
 			Random rndx = new Random();
@@ -46,7 +81,7 @@
 			_yPosibilities = Enumerable.Range(0, _arrayDimSize).ToList();
 			int x;
 			int y;
-			
+
 			for (int i = 0; i < _population; i++)
 			{
 				CheckIndex(rndx, rndy, out x, out y);
@@ -55,14 +90,27 @@
 				int r = rnd.Next(0, 6);
 				_ocupations.TryGetValue(r, out ocupation);
 
-				matrix[x, y] = r;
+				_matrix[x, y] = r;
 				_matrixVisual[x, y] = ocupation;
+
+
+				population.Add(new Model()
+				{
+					X = x,
+					Y = y,
+					Ocupation = r,
+					OcupationS = ocupation
+				});
 
 			}
 
 			CheckIndex(rndx, rndy, out x, out y);
-			
-			matrix[x, y] = 999;
+			serchingModel.X = x;
+			serchingModel.Y = y;
+
+
+
+			_matrix[x, y] = 999;
 			_matrixVisual[x, y] = "XXX";
 		}
 
@@ -73,44 +121,6 @@
 
 			if (_matrix[x, y] is not null)
 				CheckIndex(rndx, rndy, out x, out y);
-		}
-
-		int CheckPossibilitiesX(Random rnd)
-		{
-			if (_xPosibilities.Count == 0)
-				return 0;
-			int rndVal = rnd.Next(0, _arrayDimSize);
-			
-				if (_xPosibilities.Contains(rndVal))
-				{
-					var a = _xPosibilities.IndexOf(rndVal);
-					_xPosibilities.RemoveAt(a);
-					return rndVal;
-
-				}
-				else
-				{
-				return CheckPossibilitiesX(rnd);
-				}
-		}
-
-		int CheckPossibilitiesY(Random rnd)
-		{
-			if (_yPosibilities.Count == 0)
-				return 0;
-
-			int rndVal = rnd.Next(0, _arrayDimSize);
-
-			if (_yPosibilities.Contains(rndVal))
-			{
-				var a = _yPosibilities.IndexOf(rndVal);
-				_yPosibilities.RemoveAt(a);
-				return rndVal;
-			}
-			else
-			{
-				return CheckPossibilitiesY(rnd);
-			}
 		}
 
 		public void Output()
@@ -152,5 +162,48 @@
 				Console.WriteLine();
 			}
 		}
+
+
+
+
+
+		//int CheckPossibilitiesX(Random rnd)
+		//{
+		//	if (_xPosibilities.Count == 0)
+		//		return 0;
+		//	int rndVal = rnd.Next(0, _arrayDimSize);
+
+		//		if (_xPosibilities.Contains(rndVal))
+		//		{
+		//			var a = _xPosibilities.IndexOf(rndVal);
+		//			_xPosibilities.RemoveAt(a);
+		//			return rndVal;
+
+		//		}
+		//		else
+		//		{
+		//		return CheckPossibilitiesX(rnd);
+		//		}
+		//}
+
+		//int CheckPossibilitiesY(Random rnd)
+		//{
+		//	if (_yPosibilities.Count == 0)
+		//		return 0;
+
+		//	int rndVal = rnd.Next(0, _arrayDimSize);
+
+		//	if (_yPosibilities.Contains(rndVal))
+		//	{
+		//		var a = _yPosibilities.IndexOf(rndVal);
+		//		_yPosibilities.RemoveAt(a);
+		//		return rndVal;
+		//	}
+		//	else
+		//	{
+		//		return CheckPossibilitiesY(rnd);
+		//	}
+		//}
+
 	}
 }

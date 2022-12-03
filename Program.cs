@@ -6,7 +6,7 @@ Console.WriteLine("Hello, World!");
 
 //List<Model> models = new ();
 
-KNNHelper knn = new KNNHelper(200,  15);
+KNNHelper knn = new KNNHelper(200,  15, 3);
 
 knn.Output();
 

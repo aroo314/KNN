@@ -6,16 +6,13 @@ using System.Threading.Tasks;
 
 namespace KNN
 {
-	internal class Model
+	class Model
 	{
-		int[,] coordinates;
-		//ObjectClassEnum modelClass;
-		float value;
-
-		public Model()
-		{
-			Random rnd = new Random();
-		}
+		public int X { get; set; }
+		public int Y { get; set; }
+		public int Ocupation { get; set; }
+		public string OcupationS { get; set; }
+		public double EuklidesValue { get; set; }
 		
 	}
 }
