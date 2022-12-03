@@ -15,7 +15,6 @@ namespace KNN
 		public Model()
 		{
 			Random rnd = new Random();
-			//coordinates = [rnd.Next(0, 100), rnd.Next(0, 100)];
 		}
 		
 	}
